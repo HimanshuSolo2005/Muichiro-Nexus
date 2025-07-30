@@ -36,7 +36,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 mb-16">
           <Card className="text-center">
             <CardHeader>
               <Cloud className="h-12 w-12 text-cyan-600 mx-auto mb-4" />
@@ -73,12 +73,33 @@ export default function Home() {
               <CardTitle>Secure Access</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>Secure file storage accessible from anywhere in the world</CardDescription>
+              <CardDescription>Gmail-based authentication with enterprise-grade security</CardDescription>
             </CardContent>
           </Card>
         </div>
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-3xl font-bold text-blue-700 mb-2">1GB</div>
+              <div className="text-gray-600">Free Storage</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-cyan-700 mb-2">AI-Powered</div>
+              <div className="text-gray-600">Smart Organization</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-purple-700 mb-2">Anywhere</div>
+              <div className="text-gray-600">Access Your Files</div>
+            </div>
+          </div>
+        </div>
       </main>
-    </div>
 
-  );
+      <footer className="bg-gray-50 py-8">
+        <div className="container mx-auto px-4 text-center text-gray-600">
+          <p>&copy; 2025 Muichiro Nexus - Mist Breathing </p>
+        </div>
+      </footer>
+    </div>
+  )
 }
