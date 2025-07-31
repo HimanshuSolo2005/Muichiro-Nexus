@@ -14,6 +14,6 @@
 - [ ] Test responsiveness on mobile and desktop
 
 ### Deployment Checkpoints
-- [ ] Deploy to Vercel or Netlify
+- [ ] Deploy to Vercel 
 - [ ] Update README.md with live demo link
-- [ ] Share project on social media
+- [ ] Add project to resume 
