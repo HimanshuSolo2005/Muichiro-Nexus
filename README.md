@@ -5,7 +5,6 @@
 
 ## Project To-Do List
 
-### Development Checkpoints
 - [x] Set up Next.js project structure
 - [x] Integrate Noto Sans JP font for headings
 - [x] Design Home Page UI
