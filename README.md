@@ -11,6 +11,7 @@
 - [x] Design Home Page UI
 - [x] Auth done using Clerk
 - [ ] Next Target - Supabase Integration
+- [ ] Still I need to figure out to use either supabase or blob 😮‍💨
 - [ ] Add cloud storage integration
 - [ ] Implement AI features
 - [ ] Test responsiveness on mobile and desktop
