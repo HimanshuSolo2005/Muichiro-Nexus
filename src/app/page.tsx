@@ -1,10 +1,36 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Cloud, Search, Shield, Zap } from "lucide-react";
+import "./globals.css";
+import { LoginButton } from "@/components/auth/login-button";
+import { useUser } from "@clerk/nextjs";
+
+
 
 
 export default function Home() {
+  const { isSignedIn, user, isLoaded } = useUser()
+  function handleClick() {
+    if (!isSignedIn) {
+      window.location.href = "/sign-up";
+    }
+  }
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p>Wait, Breathing...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
+
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via white to-cyan-100">
       <header className="container mx-auto px-4 py-6">
         <nav className="flex items-center justify-between">
@@ -12,7 +38,7 @@ export default function Home() {
             <Cloud className="h-8 w-8 text-blue-600" />
             <span className="text-2xl font-bold text-blue-700">Muichiro-Nexus</span>
           </div>
-          <Button variant="outline">Sign In</Button>
+          <LoginButton />
         </nav>
       </header>
 
@@ -27,17 +53,17 @@ export default function Home() {
             <span className="text-cyan-400 font-bold">[Mist Breathing 5th Form]</span>
           </p>
           <div className="flex gap-4 justify-center">
-            <Button variant="default" size="lg" className="text-lg px-8 py-3">
+            <Button onClick={handleClick} variant="default" size="lg" className="text-lg px-8 py-3 cursor-pointer">
               Get Started Here..
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-3">
+            <Button variant="outline" size="lg" className="text-lg px-8 py-3 cursor-pointer">
               Slay More
             </Button>
           </div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 mb-16">
-          <Card className="text-center">
+          <Card className="text-center hover:bg-gray-50">
             <CardHeader>
               <Cloud className="h-12 w-12 text-cyan-600 mx-auto mb-4" />
               <CardTitle>Cloud Storage</CardTitle>
@@ -47,7 +73,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="text-center">
+          <Card className="text-center hover:bg-gray-50">
             <CardHeader>
               <Zap className="h-12 w-12 text-yellow-600 mx-auto mb-4" />
               <CardTitle>AI-Powered</CardTitle>
@@ -57,7 +83,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="text-center">
+          <Card className="text-center hover:bg-gray-50">
             <CardHeader>
               <Search className="h-12 w-12 text-green-600 mx-auto mb-4" />
               <CardTitle>Smart Search</CardTitle>
@@ -67,7 +93,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="text-center">
+          <Card className="text-center hover:bg-gray-50">
             <CardHeader>
               <Shield className="h-12 w-12 text-purple-600 mx-auto mb-4" />
               <CardTitle>Secure Access</CardTitle>
