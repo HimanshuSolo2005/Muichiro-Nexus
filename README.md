@@ -21,7 +21,7 @@
 - [ ] Add project to resume 
 
 
-### Tech-Stack
+## Tech-Stack
 - Next.js for handling both Client-side and Server-side
 - Clerk for authentication
 - Supabase for Creating Data base for files-uploaded and users
