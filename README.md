@@ -5,12 +5,14 @@
 
 ## Project To-Do List
 
+### Development Checkpoints
 - [x] Set up Next.js project structure
-- [x] Integrate Noto Sans JP font for headings
+- [ ] Integrate Noto Sans JP font for headings
 - [x] Design Home Page UI
-- [x] Auth done using Clerk
-- [x] Done Supabase Database Setup for upcoming Users and Files on website
-- [ ] Decided to go with Supabase's Bucket Integration and User Synchronization with Clerk - which I have to figure out.
+- [x] Created a Storage Bucket in supabase
+- [x] Created the policies to allow only authenticated users to perform CRUD 
+- [x] Just Created a separate branch for tetsing of supabase-clerk Integration for fetching and storing user details and generating a user Id in Supabase's User Table that i have previously created.
+- [ ] Now i have to figure out how a Authenticated user that is present in user Table is able to upload file using storage bucket.
 - [ ] Add cloud storage integration
 - [ ] Implement AI features
 - [ ] Test responsiveness on mobile and desktop
@@ -19,13 +21,3 @@
 - [ ] Deploy to Vercel 
 - [ ] Update README.md with live demo link
 - [ ] Add project to resume 
-
-
-## Tech-Stack
-- Next.js for handling both Client-side and Server-side
-- Clerk for authentication
-- Supabase for Creating Data base for files-uploaded and users
-<img width="1000" height="435" alt="supabase-schema-avpzehqlixdbllkwzydh" src="https://github.com/user-attachments/assets/b0ecdc31-219d-46c3-b388-fb34f7c39a72" />
-- Groq or qwen for AI-Stuffs
-- Vercel for Deployment
-
