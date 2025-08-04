@@ -7,7 +7,7 @@
 
 ### Development Checkpoints
 - [x] Set up Next.js project structure
-- [ ] Integrate Noto Sans JP font for headings
+- [x] Integrate Noto Sans JP font for headings
 - [x] Design Home Page UI
 - [x] Created a Storage Bucket in supabase
 - [x] Created the policies to allow only authenticated users to perform CRUD 
