@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import {Cinzel} from "next/font/google";
 import "./globals.css";
 import { Cloud } from "lucide-react";
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -21,23 +21,9 @@ const cinzel = Cinzel({
 
 
 export const metadata: Metadata = {
-  title: "Muichiro-Nexus",
+  title: "Muichiro-Nexus : Mist Breathing",
   description: "Mist Breathing App Form",
 };
-
-// function Header() {
-//   return (
-//     <header style={{ display: 'flex', justifyContent: 'space-between', padding: 20 }}>
-//       <h1>My App</h1>
-//       <SignedIn>
-//         <UserButton />
-//       </SignedIn>
-//       <SignedOut>
-//         <SignInButton />
-//       </SignedOut>
-//     </header>
-//   )
-// }
 
 export default function RootLayout({
   children,
