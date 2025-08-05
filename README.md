@@ -12,7 +12,11 @@
 - [x] Created a Storage Bucket in supabase
 - [x] Created the policies to allow only authenticated users to perform CRUD 
 - [x] Just Created a separate branch for tetsing of supabase-clerk Integration for fetching and storing user details and generating a user Id in Supabase's User Table that i have previously created.
-- [ ] Now i have to figure out how a Authenticated user that is present in user Table is able to upload file using storage bucket.
+- [x] Finally created upload - file feature
+- [x] File-Upload stuffs just take file from user and then it send that file to my supabase files-table just like clerk send user details to user-table in supabase.
+- [x] After receiving data from frontend, supabase stores that file in my storage-bucket where i have full authority to Delete, Download and get link for uploaded files.
+- [ ] Next Target to to show user's uploaded files on frontend. 
+- [ ] Next Step will be adding feature of Downloading and deleting files on frontend, so that users can interact with their uploaded files.
 - [ ] Add cloud storage integration
 - [ ] Implement AI features
 - [ ] Test responsiveness on mobile and desktop
