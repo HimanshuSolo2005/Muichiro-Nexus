@@ -2,22 +2,22 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Cloud, Search, Shield, Zap, Upload, Settings } from "lucide-react"
+import { Cloud, Search, Shield, Zap, Settings } from "lucide-react"
 import { LoginButton } from "@/components/auth/login-button"
 import { useUser } from "@clerk/nextjs"
-import { useEffect } from "react" 
+import { useEffect } from "react"
 import { syncClerkUserToSupabase } from "./actions/users"
-import Link from "next/link" 
+import Link from "next/link"
+import { FileUploadForm } from "@/components/file-upload-form" // Import the new component
 
 export default function Home() {
   const { isSignedIn, user, isLoaded } = useUser()
-
 
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       syncClerkUserToSupabase()
     }
-  }, [isLoaded, isSignedIn, user]) 
+  }, [isLoaded, isSignedIn, user])
 
   if (!isLoaded) {
     return (
@@ -29,7 +29,6 @@ export default function Home() {
       </div>
     )
   }
-
 
   if (!isSignedIn) {
     return (
@@ -58,7 +57,6 @@ export default function Home() {
             </p>
             <div className="flex gap-4 justify-center">
               <Link href="/sign-up" passHref>
-                {" "}
                 <Button variant="default" size="lg" className="text-lg px-8 py-3 cursor-pointer">
                   Get Started Here..
                 </Button>
@@ -140,8 +138,10 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Cloud className="h-8 w-8 text-sky-500" /> 
-              <span className="text-2xl font-bold text-blue-600">Muichiro-Nexus</span> 
+              <Cloud className="h-8 w-8 text-sky-500" />
+              <a href="/" className="text-2xl font-bold text-blue-600">
+                Muichiro-Nexus
+              </a>
             </div>
             <LoginButton />
           </div>
@@ -159,20 +159,15 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-            <CardHeader className="text-center">
-              <Upload className="h-12 w-12 text-sky-500 mx-auto mb-2" /> 
-              <CardTitle className="text-lg">Upload Files</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-center">Drag and drop or browse to upload your files</CardDescription>
-            </CardContent>
+          <Card className="col-span-full md:col-span-2 lg:col-span-2">
+            {" "}
+            <FileUploadForm />
           </Card>
 
           <Card className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardHeader className="text-center">
               <Search className="h-12 w-12 text-green-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">Smart Search</CardTitle>
+              <CardTitle className="text-lg">Smart Search - First Form 🧠</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center">Find files using AI-powered content search</CardDescription>
@@ -182,7 +177,7 @@ export default function Home() {
           <Card className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardHeader className="text-center">
               <Cloud className="h-12 w-12 text-purple-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">My Files</CardTitle>
+              <CardTitle className="text-lg">My Files - Second Form 📁</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center">Browse and manage all your stored files</CardDescription>
@@ -192,7 +187,7 @@ export default function Home() {
           <Card className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardHeader className="text-center">
               <Settings className="h-12 w-12 text-orange-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">Settings</CardTitle>
+              <CardTitle className="text-lg">Settings - Third Form 🌣</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center">Manage your account and storage preferences</CardDescription>
@@ -202,7 +197,7 @@ export default function Home() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Storage Overview</CardTitle>
+            <CardTitle>Storage Breathing</CardTitle>
             <CardDescription>Your current storage usage and limits</CardDescription>
           </CardHeader>
           <CardContent>
