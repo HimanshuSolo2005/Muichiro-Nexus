@@ -1,4 +1,4 @@
-# Muichiro-Nexus: A Cloud-Storage with AI Integration
+# Muichiro-Nexus: *A Cloud-Storage with AI Integration*
 
 <img width="200" height="206" alt="image" src="https://github.com/user-attachments/assets/b45dc22b-fcc9-44f7-a7cd-6d5489d45ce4" />
 
