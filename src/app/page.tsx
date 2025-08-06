@@ -1,36 +1,20 @@
-"use client"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Cloud, Search, Shield, Zap, Settings } from "lucide-react"
+import { Cloud, Search, Shield, Zap, Settings } from 'lucide-react'
 import { LoginButton } from "@/components/auth/login-button"
-import { useUser } from "@clerk/nextjs"
-import { useEffect } from "react"
-import { syncClerkUserToSupabase } from "./actions/users"
+import { currentUser } from "@clerk/nextjs/server"
 import Link from "next/link"
-import { FileUploadForm } from "@/components/file-upload-form" // Import the new component
+import { FileUploadForm } from "@/components/file-upload-form"
+import { createServiceSupabaseClient } from "@/lib/supabase/server" 
+import { DownloadButton } from "@/components/download-button"
+import { DeleteButton } from "@/components/delete-button" 
+import { syncClerkUserToSupabase } from "./actions/users"
+import { redirect } from "next/navigation"
 
-export default function Home() {
-  const { isSignedIn, user, isLoaded } = useUser()
+export default async function Home() {
+  const user = await currentUser()
 
-  useEffect(() => {
-    if (isLoaded && isSignedIn && user) {
-      syncClerkUserToSupabase()
-    }
-  }, [isLoaded, isSignedIn, user])
-
-  if (!isLoaded) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p>Wait, Breathing...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!isSignedIn) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-100">
         <header className="container mx-auto px-4 py-6">
@@ -110,7 +94,7 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div>
                 <div className="text-3xl font-bold text-blue-700 mb-2">1GB</div>
-                <div className="text-gray-600">Free Storage</div>
+                <div className="text-sm text-gray-600">Free Storage</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-cyan-700 mb-2">AI-Powered</div>
@@ -118,7 +102,7 @@ export default function Home() {
               </div>
               <div>
                 <div className="text-3xl font-bold text-purple-700 mb-2">Anywhere</div>
-                <div className="text-gray-600">Access Your Files</div>
+                <div className="text-sm text-gray-600">Access Your Files</div>
               </div>
             </div>
           </div>
@@ -132,22 +116,84 @@ export default function Home() {
     )
   }
 
+  // Use the service role client for fetching files as well, to bypass RLS, it is creating really a issue, huh!!!
+  const supabase = createServiceSupabaseClient()
+
+  let supabaseUserId: string | null = null;
+
+  const { data: userData, error: userFetchError } = await supabase
+    .from("users")
+    .select("id")
+    .eq("clerk_user_id", user.id)
+    .maybeSingle() 
+
+  if (!userData) {
+    console.warn("User not found in Supabase, attempting to sync:", userFetchError);
+
+    const syncResult = await syncClerkUserToSupabase();
+
+    if (syncResult.success && syncResult.user?.id) {
+      console.log("User synced successfully, redirecting to refresh page.");
+     
+      redirect("/"); 
+    } else {
+      console.error("Failed to sync user to Supabase:", syncResult.message);
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-red-500">Failed to sync user data. Please try again or contact support.</p>
+            <p className="text-sm text-gray-500 mt-2">
+              {syncResult.message ? `(Error: ${syncResult.message})` : ""}
+            </p>
+          </div>
+        </div>
+      );
+    }
+  } else {
+    supabaseUserId = userData.id;
+  }
+
+ 
+  if (!supabaseUserId) {
+    console.error("Supabase user ID is null after sync attempt. This should not happen.");
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-500">An unexpected error occurred. User ID not available.</p>
+      </div>
+    );
+  }
+
+  const { data: files, error: filesError } = await supabase
+    .from("files")
+    .select("*")
+    .eq("user_id", supabaseUserId)
+    .order("uploaded_at", { ascending: false }) 
+
+  if (filesError) {
+    console.error("Error fetching files:", filesError)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-500">Error loading your files. Please try again.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Cloud className="h-8 w-8 text-sky-500" />
-              <a href="/" className="text-2xl font-bold text-blue-600">
-                Muichiro-Nexus
-              </a>
+              <span className="text-2xl font-bold text-blue-600">Muichiro-Nexus</span>
             </div>
             <LoginButton />
           </div>
         </div>
       </header>
 
+      {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -158,16 +204,47 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-2 lg:col-span-4 gap-6 mb-8">
           <Card className="col-span-full md:col-span-2 lg:col-span-2">
-            {" "}
             <FileUploadForm />
           </Card>
+
+          {/* File List Section */}
+          <Card>
+          <CardHeader>
+            <CardTitle>Uploaded Files</CardTitle>
+            <CardDescription>Manage your Files-Breathing here.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {files && files.length > 0 ? (
+              <div className="grid gap-4">
+                {files.map((file) => (
+                  <div key={file.id} className="flex items-center justify-between p-3 border rounded-md">
+                    <div className="flex flex-col">
+                      <span className="font-medium">{file.file_name}</span>
+                      <span className="text-sm text-gray-500">
+                        {(file.file_size / 1024 / 1024).toFixed(2)} MB -{" "}
+                        {new Date(file.uploaded_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <DownloadButton filePath={file.file_path} />
+                      <DeleteButton fileId={file.id} filePath={file.file_path} fileName={file.file_name} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500">No files uploaded yet. Start File-Breathing Now</p>
+            )}
+          </CardContent>
+        </Card>
 
           <Card className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardHeader className="text-center">
               <Search className="h-12 w-12 text-green-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">Smart Search - First Form 🧠</CardTitle>
+              <CardTitle className="text-lg">Smart Search</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center">Find files using AI-powered content search</CardDescription>
@@ -177,7 +254,7 @@ export default function Home() {
           <Card className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardHeader className="text-center">
               <Cloud className="h-12 w-12 text-purple-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">My Files - Second Form 📁</CardTitle>
+              <CardTitle className="text-lg">My Files</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center">Browse and manage all your stored files</CardDescription>
@@ -187,7 +264,7 @@ export default function Home() {
           <Card className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardHeader className="text-center">
               <Settings className="h-12 w-12 text-orange-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">Settings - Third Form 🌣</CardTitle>
+              <CardTitle className="text-lg">Settings</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className="text-center">Manage your account and storage preferences</CardDescription>
@@ -195,9 +272,10 @@ export default function Home() {
           </Card>
         </div>
 
-        <Card>
+        {/* Storage Stats */}
+        <Card className="mb-8">
           <CardHeader>
-            <CardTitle>Storage Breathing</CardTitle>
+            <CardTitle>Storage Overview</CardTitle>
             <CardDescription>Your current storage usage and limits</CardDescription>
           </CardHeader>
           <CardContent>
@@ -206,12 +284,12 @@ export default function Home() {
                 <div className="text-2xl font-bold text-blue-600 mb-1">0 MB</div>
                 <div className="text-sm text-gray-600">Used</div>
               </div>
-              <div className="text-center">
+              <div>
                 <div className="text-2xl font-bold text-green-600 mb-1">1 GB</div>
                 <div className="text-sm text-gray-600">Available</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600 mb-1">0</div>
+                <div className="text-2xl font-bold text-purple-600 mb-1">{files?.length || 0}</div>
                 <div className="text-sm text-gray-600">Files</div>
               </div>
             </div>
@@ -223,6 +301,9 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
+
+
+        
       </main>
     </div>
   )
