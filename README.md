@@ -15,9 +15,10 @@
 - [x] Finally created upload - file feature
 - [x] File-Upload stuffs just take file from user and then it send that file to my supabase files-table just like clerk send user details to user-table in supabase.
 - [x] After receiving data from frontend, supabase stores that file in my storage-bucket where i have full authority to Delete, Download and get link for uploaded files.
-- [ ] Next Target to to show user's uploaded files on frontend. 
-- [ ] Next Step will be adding feature of Downloading and deleting files on frontend, so that users can interact with their uploaded files.
-- [ ] Add cloud storage integration
+- [x] Took me hours but its finally done, I am done with integrating feature of file-display on frontend, was stuck with some RLS policy issues but have to just bypass it due to lack of time 😅.
+- [x] File-deleting working properly on frontend.
+- [ ] Have some issues with file-downloading feat., no idea why it is failing to fetch th downloading-url from bucket, even my bucket is not-found LOL, I have to figure it out.
+- [ ] Next I will be moving to most interesting part of my project - AI integration. I guess, I have to deep dive to Vercel's AI sdk for nextjs.
 - [ ] Implement AI features
 - [ ] Test responsiveness on mobile and desktop
 
