@@ -17,7 +17,8 @@
 - [x] After receiving data from frontend, supabase stores that file in my storage-bucket where i have full authority to Delete, Download and get link for uploaded files.
 - [x] Took me hours but its finally done, I am done with integrating feature of file-display on frontend, was stuck with some RLS policy issues but have to just bypass it due to lack of time 😅.
 - [x] File-deleting working properly on frontend.
-- [ ] Have some issues with file-downloading feat., no idea why it is failing to fetch the downloading-url of file from bucket, even my bucket is not-found LOL, I have to figure it out.
+- [x] Have some issues with file-downloading feat., no idea why it is failing to fetch the downloading-url of file from bucket, even my bucket is not-found LOL, I have to figure it out.
+- [x] Fixed File Download feature.
 - [ ] Next I will be moving to most interesting part of my project - AI integration. I guess, I have to deep dive to Vercel's AI sdk for nextjs.
 - [ ] Implement AI features
 - [ ] Test responsiveness on mobile and desktop
