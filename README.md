@@ -1,4 +1,4 @@
-# Muichiro-Nexus: *A Cloud-Storage with AI Integration*
+9# Muichiro-Nexus: *A Cloud-Storage with AI Integration*
 
 <img width="200" height="206" alt="image" src="https://github.com/user-attachments/assets/b45dc22b-fcc9-44f7-a7cd-6d5489d45ce4" />
 
@@ -19,8 +19,9 @@
 - [x] File-deleting working properly on frontend.
 - [x] Have some issues with file-downloading feat., no idea why it is failing to fetch the downloading-url of file from bucket, even my bucket is not-found LOL, I have to figure it out.
 - [x] Fixed File Download feature.
-- [ ] Next I will be moving to most interesting part of my project - AI integration. I guess, I have to deep dive to Vercel's AI sdk for nextjs.
-- [ ] Implement AI features
+- [ ] Next I will be moving to most interesting part of my project - AI integration.
+- [ ] Will deep dive into Vercel's ai-sdk
+- [ ] Complete Implementing AI features
 - [ ] Test responsiveness on mobile and desktop
 
 ### Deployment Checkpoints
