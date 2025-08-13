@@ -211,7 +211,7 @@ export default async function Home() {
           </Card>
 
           {/* File List Section */}
-          <Card>
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
           <CardHeader>
             <CardTitle>Uploaded Files</CardTitle>
             <CardDescription>Manage your Files-Breathing here.</CardDescription>

@@ -39,7 +39,7 @@ export function FileUploadForm() {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto hover:shadow-2xl transition-colors">
       <CardHeader>
         <CardTitle>Upload Your Files</CardTitle>
         <CardDescription>Select a file to upload to Muichiro's Nexus Storage.</CardDescription>
