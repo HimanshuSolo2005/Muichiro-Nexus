@@ -1,8 +1,7 @@
 "use server"
 
 import { createServiceSupabaseClient } from "@/lib/supabase/server"
-import { embedMany } from "ai"
-import { openai } from "@ai-sdk/openai"
+import { embedTexts } from "@/lib/embeddings"
 
 function sanitizeText(input: string): string {
   return input.replace(/\u0000/g, " ").trim()
@@ -22,9 +21,7 @@ function chunkText(
     const end = Math.min(start + chunkSize, text.length)
     const slice = text.slice(start, end)
     chunks.push(slice)
-    if (end === text.length) {
-      break
-    }
+    if (end === text.length) break
     start = end - overlap
     if (start < 0) start = 0
   }
@@ -83,10 +80,7 @@ export async function processFileAI(params: {
     return { success: false, message: "No chunks generated" }
   }
 
-  const { embeddings } = await embedMany({
-    model: openai.embedding("text-embedding-3-large"),
-    values: chunks,
-  })
+  const embeddings = await embedTexts(chunks)
 
   const rows = chunks.map((content, index) => ({
     user_id: userId,

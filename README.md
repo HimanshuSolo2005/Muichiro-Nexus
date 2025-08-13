@@ -34,7 +34,7 @@
 1) Install packages
 
 ```bash
-bun add ai @ai-sdk/openai
+npm i @xenova/transformers
 ```
 
 2) Environment variables
@@ -42,7 +42,7 @@ bun add ai @ai-sdk/openai
 Add to `.env.local` (and Vercel project if deploying):
 
 ```
-OPENAI_API_KEY=sk-...
+# No API key needed for local embeddings with @xenova/transformers
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
@@ -64,7 +64,7 @@ create table if not exists public.file_chunks (
   file_path text not null,
   chunk_index int not null,
   content text not null,
-  embedding vector(3072) not null, -- text-embedding-3-large dims
+  embedding vector(384) not null, -- all-MiniLM-L6-v2 dims
   created_at timestamp with time zone default now()
 );
 
@@ -75,7 +75,7 @@ create index if not exists file_chunks_embedding_idx on public.file_chunks using
 -- RPC for semantic match
 create or replace function public.match_file_chunks(
   p_user_id uuid,
-  p_query_embedding vector(3072),
+  p_query_embedding vector(384),
   p_match_count int default 8
 )
 returns table (

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServiceSupabaseClient } from "@/lib/supabase/server"
-import { embed } from "ai"
-import { openai } from "@ai-sdk/openai"
+import { embedText } from "@/lib/embeddings"
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,10 +15,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 })
     }
 
-    const { embedding } = await embed({
-      model: openai.embedding("text-embedding-3-large"),
-      value: query,
-    })
+    const embedding = await embedText(query)
 
     const supabase = createServiceSupabaseClient()
 
