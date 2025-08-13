@@ -89,6 +89,7 @@ export async function uploadFile(formData: FormData) {
  * @param filePath - The path of the file in Supabase Storage.
  * @returns An object with success status, message, and the download URL.
  */
+
 export async function getDownloadUrl(filePath: string) {
   const user = await currentUser()
 
@@ -96,7 +97,7 @@ export async function getDownloadUrl(filePath: string) {
     return { success: false, message: "Authentication required." }
   }
 
-  // Use the service role client to bypass RLS for this project's scope
+  // Used the service role client to bypass RLS for this project's scope
   const supabase = createServiceSupabaseClient()
 
   try {

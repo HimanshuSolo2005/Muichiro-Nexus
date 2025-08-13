@@ -1,4 +1,4 @@
-# Muichiro-Nexus: *A Cloud-Storage with AI Integration*
+9# Muichiro-Nexus: *A Cloud-Storage with AI Integration*
 
 <img width="200" height="206" alt="image" src="https://github.com/user-attachments/assets/b45dc22b-fcc9-44f7-a7cd-6d5489d45ce4" />
 
@@ -17,9 +17,11 @@
 - [x] After receiving data from frontend, supabase stores that file in my storage-bucket where i have full authority to Delete, Download and get link for uploaded files.
 - [x] Took me hours but its finally done, I am done with integrating feature of file-display on frontend, was stuck with some RLS policy issues but have to just bypass it due to lack of time 😅.
 - [x] File-deleting working properly on frontend.
-- [ ] Have some issues with file-downloading feat., no idea why it is failing to fetch th downloading-url from bucket, even my bucket is not-found LOL, I have to figure it out.
-- [ ] Next I will be moving to most interesting part of my project - AI integration. I guess, I have to deep dive to Vercel's AI sdk for nextjs.
-- [ ] Implement AI features
+- [x] Have some issues with file-downloading feat., no idea why it is failing to fetch the downloading-url of file from bucket, even my bucket is not-found LOL, I have to figure it out.
+- [x] Fixed File Download feature.
+- [ ] Next I will be moving to most interesting part of my project - AI integration.
+- [ ] Will deep dive into Vercel's ai-sdk
+- [ ] Complete Implementing AI features
 - [ ] Test responsiveness on mobile and desktop
 
 ### Deployment Checkpoints
