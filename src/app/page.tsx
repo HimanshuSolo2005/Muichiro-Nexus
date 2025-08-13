@@ -10,6 +10,7 @@ import { DownloadButton } from "@/components/download-button"
 import { DeleteButton } from "@/components/delete-button" 
 import { syncClerkUserToSupabase } from "./actions/users"
 import { redirect } from "next/navigation"
+import { SemanticSearch } from "@/components/semantic-search"
 
 export default async function Home() {
   const user = await currentUser()
@@ -218,93 +219,85 @@ export default async function Home() {
           </CardHeader>
           <CardContent>
             {files && files.length > 0 ? (
-              <div className="grid gap-4">
+              <ul className="space-y-4">
                 {files.map((file) => (
-                  <div key={file.id} className="flex items-center justify-between p-3 border rounded-md">
-                    <div className="flex flex-col">
-                      <span className="font-medium">{file.file_name}</span>
-                      <span className="text-sm text-gray-500">
-                        {(file.file_size / 1024 / 1024).toFixed(2)} MB -{" "}
-                        {new Date(file.uploaded_at).toLocaleDateString()}
-                      </span>
+                  <li key={file.id} className="p-4 border rounded-lg bg-white shadow-sm flex items-center justify-between">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-lg font-semibold truncate">{file.file_name}</p>
+                      <p className="text-sm text-gray-500">Size: {(file.file_size / 1024).toFixed(2)} KB</p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <DownloadButton filePath={file.file_path} />
                       <DeleteButton fileId={file.id} filePath={file.file_path} fileName={file.file_name} />
                     </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             ) : (
-              <p className="text-center text-gray-500">No files uploaded yet. Start File-Breathing Now</p>
+              <p className="text-gray-500">No files uploaded yet. Start by uploading a file!</p>
             )}
           </CardContent>
-        </Card>
+          </Card>
 
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-            <CardHeader className="text-center">
-              <Search className="h-12 w-12 text-green-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">Smart Search</CardTitle>
+          {/* Semantic Search */}
+          <div className="col-span-full">
+            <SemanticSearch userId={supabaseUserId} />
+          </div>
+        </div>
+
+        {/* Feature Highlights */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Search className="h-5 w-5 text-green-600" />
+                Smart Search
+              </CardTitle>
+              <CardDescription>Find files by content, not just names.</CardDescription>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-center">Find files using AI-powered content search</CardDescription>
+              <p className="text-sm text-gray-600">
+                Type a question and search your files semantically.
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-            <CardHeader className="text-center">
-              <Cloud className="h-12 w-12 text-purple-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">My Files</CardTitle>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="h-5 w-5 text-yellow-600" />
+                AI Insights
+              </CardTitle>
+              <CardDescription>Automatic file analysis upon upload.</CardDescription>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-center">Browse and manage all your stored files</CardDescription>
+              <p className="text-sm text-gray-600">
+                Text documents are chunked and embedded for rapid discovery.
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-            <CardHeader className="text-center">
-              <Settings className="h-12 w-12 text-orange-600 mx-auto mb-2" />
-              <CardTitle className="text-lg">Settings</CardTitle>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Settings className="h-5 w-5 text-gray-700" />
+                Manage
+              </CardTitle>
+              <CardDescription>Download or delete your files anytime.</CardDescription>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-center">Manage your account and storage preferences</CardDescription>
+              <p className="text-sm text-gray-600">Full control over your storage.</p>
             </CardContent>
           </Card>
         </div>
-
-        {/* Storage Stats */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Storage Overview</CardTitle>
-            <CardDescription>Your current storage usage and limits</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-1">0 MB</div>
-                <div className="text-sm text-gray-600">Used</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-green-600 mb-1">1 GB</div>
-                <div className="text-sm text-gray-600">Available</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600 mb-1">{files?.length || 0}</div>
-                <div className="text-sm text-gray-600">Files</div>
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="bg-gray-200 rounded-full h-2">
-                <div className="bg-blue-600 h-2 rounded-full" style={{ width: "0%" }}></div>
-              </div>
-              <p className="text-sm text-gray-600 mt-2">0% of storage used</p>
-            </div>
-          </CardContent>
-        </Card>
-
-
-        
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t mt-12 py-6">
+        <div className="container mx-auto px-4 text-center text-gray-600">
+          <p>&copy; 2025 Muichiro Nexus - Mist Breathing</p>
+        </div>
+      </footer>
     </div>
   )
 }
