@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server"
 import { createServiceSupabaseClient } from "@/lib/supabase/server" 
 import { v4 as uuidv4 } from "uuid" // 
 import { revalidatePath } from "next/cache" 
+import { processFileAI } from "./ai"
 
 /**
  * Handles file upload to Supabase Storage and records metadata in the database.
@@ -60,19 +61,35 @@ export async function uploadFile(formData: FormData) {
       return { success: false, message: `File upload failed: ${uploadError.message}` }
     }
 
-    // 2. Record file metadata in the public.files table
-    const { data: fileMetadata, error: insertError } = await supabase.from("files").insert({
-      user_id: supabaseUserId, 
-      file_name: file.name, 
-      file_path: filePath, 
-      file_size: file.size,
-      mime_type: file.type,
-    })
+    // 2. Record file metadata in the public.files table and get inserted row
+    const { data: fileMetadata, error: insertError } = await supabase
+      .from("files")
+      .insert({
+        user_id: supabaseUserId, 
+        file_name: file.name, 
+        file_path: filePath, 
+        file_size: file.size,
+        mime_type: file.type,
+      })
+      .select()
+      .single()
 
-    if (insertError) {
+    if (insertError || !fileMetadata) {
       console.error("Error inserting file metadata:", insertError)
       await supabase.storage.from("cloud-storage-files").remove([filePath])
-      return { success: false, message: `Failed to record file metadata: ${insertError.message}` }
+      return { success: false, message: `Failed to record file metadata: ${insertError?.message}` }
+    }
+
+    // 3. AI processing (best-effort)
+    try {
+      await processFileAI({
+        fileId: fileMetadata.id,
+        userId: supabaseUserId,
+        filePath,
+        mimeType: file.type,
+      })
+    } catch (aiError) {
+      console.warn("AI processing failed (non-blocking)", aiError)
     }
 
     console.log("File uploaded and metadata recorded successfully:", fileMetadata)
