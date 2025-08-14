@@ -23,10 +23,10 @@ export async function uploadFile(formData: FormData) {
     return { success: false, message: "No file provided or file is empty." }
   }
 
-  // Use the service role client to bypass RLS for this project's scope
+  // use the service role client to bypass RLS for this project's scope
   const supabase = createServiceSupabaseClient()
 
-  // Get the user's UUID from the Supabase 'users' table This is crucial because Supabase RLS uses the UUID from its own auth.uid() which we've now mapped to the Clerk user ID in the 'users' table.
+  // get the user's UUID from the Supabase 'users' table This is crucial because Supabase RLS uses the UUID from its own auth.uid() which we've now mapped to the Clerk user ID in the 'users' table.
   const { data: userData, error: userError } = await supabase
     .from("users")
     .select("id")
@@ -40,14 +40,14 @@ export async function uploadFile(formData: FormData) {
 
   const supabaseUserId = userData.id
 
-  // Generate a unique file name to prevent Intersections...
+  // generate a unique file name to prevent Intersections...
   const fileExtension = file.name.split(".").pop()
   const uniqueFileName = `${uuidv4()}.${fileExtension}`
-  // Define the path in Supabase Storage: user_id/unique_file_name
-  const filePath = `${supabaseUserId}/${uniqueFileName}` // Use Supabase user ID for folder
+  // define the path in Supabase Storage: user_id/unique_file_name
+  const filePath = `${supabaseUserId}/${uniqueFileName}` // use Supabase user ID for folder
 
   try {
-    // 1. Upload the file to Supabase Storage
+    // 1. upload the file to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("cloud-storage-files") 
       .upload(filePath, file, {
