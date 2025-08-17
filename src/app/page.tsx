@@ -10,6 +10,9 @@ import { DownloadButton } from "@/components/download-button"
 import { DeleteButton } from "@/components/delete-button" 
 import { syncClerkUserToSupabase } from "./actions/users"
 import { redirect } from "next/navigation"
+import { AnalyzeButton } from "@/components/analyze-button"
+import { ImagePreview } from "@/components/image-preview"
+import { AIMetadataDisplay } from "@/components/ai-metadata-display"
 
 export default async function Home() {
   const user = await currentUser()
@@ -86,7 +89,7 @@ export default async function Home() {
                 <CardTitle>Secure Access</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>Gmail-based authentication with enterprise-grade security</CardDescription>
+                <CardDescription>Gmail-based authentication with security</CardDescription>
               </CardContent>
             </Card>
           </div>
@@ -220,23 +223,31 @@ export default async function Home() {
             {files && files.length > 0 ? (
               <div className="grid gap-4">
                 {files.map((file) => (
-                  <div key={file.id} className="flex items-center justify-between p-3 border rounded-md">
-                    <div className="flex flex-col">
-                      <span className="font-medium">{file.file_name}</span>
-                      <span className="text-sm text-gray-500">
-                        {(file.file_size / 1024 / 1024).toFixed(2)} MB -{" "}
-                        {new Date(file.uploaded_at).toLocaleDateString()}
-                      </span>
+                  <div key={file.id} className="border rounded-md p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <span className="font-medium">{file.file_name}</span>
+                        <span className="text-sm text-gray-500">
+                          {(file.file_size / 1024 / 1024).toFixed(2)} MB -{" "}
+                          {new Date(file.uploaded_at).toLocaleDateString()} -{" "}
+                          <span className="capitalize">{file.mime_type.split("/")[0]}</span>
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <AnalyzeButton fileId={file.id} isAnalyzed={file.ai_analyzed} />
+                        <DownloadButton filePath={file.file_path} />
+                        <DeleteButton fileId={file.id} filePath={file.file_path} fileName={file.file_name} />
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <DownloadButton filePath={file.file_path} />
-                      <DeleteButton fileId={file.id} filePath={file.file_path} fileName={file.file_name} />
-                    </div>
+
+                    <ImagePreview fileName={file.file_name} filePath={file.file_path} mimeType={file.mime_type} />
+
+                    {file.ai_analyzed && file.ai_metadata && <AIMetadataDisplay metadata={file.ai_metadata} />}
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-center text-gray-500">No files uploaded yet. Start File-Breathing Now</p>
+              <p className="text-center text-gray-500">No files uploaded yet. Start by uploading one above!</p>
             )}
           </CardContent>
         </Card>
