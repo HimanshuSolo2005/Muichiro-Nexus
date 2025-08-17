@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { Label } from "./ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { uploadFile } from "@/app/actions/file"
-import { useFormStatus } from "react-dom"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { uploadFile } from "@/app/actions/file" 
+import { useFormStatus } from "react-dom" 
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -42,13 +42,15 @@ export function FileUploadForm() {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Upload Your Files</CardTitle>
-        <CardDescription>Select a file to upload to Muichiro's Nexus Storage.</CardDescription>
+        <CardDescription>
+          Select a file to upload to your cloud storage. Supports documents (.txt, .pdf, .docx) and images (.png, .jpg).
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={handleSubmit} className="space-y-4">
           <div className="grid w-full items-center gap-1.5">
             <Label htmlFor="file-input">File</Label>
-            <Input id="file-input" name="file" type="file" required />
+            <Input id="file-input" name="file" type="file" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg" required />
           </div>
           <SubmitButton />
           {message && <p className={`text-sm text-center ${isError ? "text-red-500" : "text-green-500"}`}>{message}</p>}
