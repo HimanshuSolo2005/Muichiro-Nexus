@@ -1,9 +1,10 @@
-9# Muichiro-Nexus: *A Cloud-Storage with AI Integration*
+# Muichiro-Nexus: *A Cloud-Storage with AI Integration*
 
 <img width="200" height="206" alt="image" src="https://github.com/user-attachments/assets/b45dc22b-fcc9-44f7-a7cd-6d5489d45ce4" />
 
+---
 
-## Project To-Do List
+## Project Checkpoints
 
 ### Development Checkpoints
 - [x] Set up Next.js project structure
@@ -19,8 +20,17 @@
 - [x] File-deleting working properly on frontend.
 - [x] Have some issues with file-downloading feat., no idea why it is failing to fetch the downloading-url of file from bucket, even my bucket is not-found LOL, I have to figure it out.
 - [x] Fixed File Download feature.
-- [ ] Next I will be moving to most interesting part of my project - AI integration.
-- [ ] Will deep dive into Vercel's ai-sdk
+
+---
+
+## Getting Started with AI-Integration
+### Here is a workflow...
+<img width="1600" height="1000" alt="image" src="https://github.com/user-attachments/assets/d6b9b123-4d2d-48c8-8d77-d5381c8221f1" />
+
+- [x] Started with integrating AI, have some roadmap in my mind..., will share it with a workflow...
+- [x] Implemented these feature using Vercel's ai-sdk + groq.
+- [x] First feature will be AI-Analysis which includes give the file to groq-sdk which analyze it and generate respone
+- [ ] Next step will be storing these response in form of a structured metadata which will be used for AI-Search feature later...
 - [ ] Complete Implementing AI features
 - [ ] Test responsiveness on mobile and desktop
 
