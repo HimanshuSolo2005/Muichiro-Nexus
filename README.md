@@ -30,6 +30,8 @@
 - [x] Started with integrating AI, have some roadmap in my mind..., will share it with a workflow...
 - [x] Implemented these feature using Vercel's ai-sdk + groq.
 - [x] First feature will be AI-Analysis which includes give the file to groq-sdk which analyze it and generate respone
+- [x] Initialized Search feature by creating a `search.ts` server file in actions folder.
+- [x] Using debouncing technique to prevent uneccesary javascript calls to server. Created a debouncing hook.
 - [ ] Next step will be storing these response in form of a structured metadata which will be used for AI-Search feature later...
 - [ ] Complete Implementing AI features
 - [ ] Test responsiveness on mobile and desktop
