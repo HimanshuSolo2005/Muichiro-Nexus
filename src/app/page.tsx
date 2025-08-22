@@ -14,7 +14,11 @@ import { AnalyzeButton } from "@/components/analyze-button"
 import { ImagePreview } from "@/components/image-preview"
 import { AIMetadataDisplay } from "@/components/ai-metadata-display"
 
+
 export default async function Home() {
+  const handleClick = () => {
+    redirect("/sign-up")
+  }
   const user = await currentUser()
 
   if (!user) {
