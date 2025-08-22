@@ -2,7 +2,7 @@
 
 import { currentUser } from "@clerk/nextjs/server"
 import { createServiceSupabaseClient } from "@/lib/supabase/server"
-import { revalidatePath } from "next/cache" // Import revalidatePath
+import { revalidatePath } from "next/cache" 
 
 /**
  * Synchronizes the Clerk user's information with the Supabase 'users' table.
@@ -16,11 +16,10 @@ export async function syncClerkUserToSupabase() {
     return { success: false, message: "No authenticated user." }
   }
 
-  const supabase = createServiceSupabaseClient() // Use service client for upserting users
+  const supabase = createServiceSupabaseClient() 
 
-  // Extract necessary user data from Clerk
   const clerkUserId = user.id
-  const email = user.emailAddresses[0]?.emailAddress // Get primary email
+  const email = user.emailAddresses[0]?.emailAddress 
 
   if (!email) {
     console.error(`syncClerkUserToSupabase: User ${clerkUserId} has no primary email.`)
@@ -28,8 +27,6 @@ export async function syncClerkUserToSupabase() {
   }
 
   try {
-    // First, try to upsert based on clerk_user_id.
-    // This is the primary way to link Clerk users to Supabase.
     const { data, error } = await supabase
       .from("users")
       .upsert(
@@ -38,14 +35,13 @@ export async function syncClerkUserToSupabase() {
           email: email,
         },
         {
-          onConflict: "clerk_user_id", // Conflict target for upsert
-          ignoreDuplicates: false, // Ensure update happens if conflict
+          onConflict: "clerk_user_id", 
+          ignoreDuplicates: false,
         },
       )
-      .select() // Select the inserted/updated row to get its ID
+      .select() 
 
     if (error) {
-      // If the error is a duplicate key violation on the 'email' column 
       if (error.code === '23505' && error.message.includes('users_email_key')) {
         console.warn(`Duplicate email found for ${email}. Attempting to update existing user.`, error);
 
